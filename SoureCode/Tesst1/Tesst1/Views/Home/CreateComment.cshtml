@@ -1,0 +1,11 @@
+﻿@model Tesst1.Models.Comment
+
+@using (Html.BeginForm("CreateComment", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ProductID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.CommentText)
+        @Html.TextAreaFor(model => model.CommentText, new { @class = "form-control", rows = "4" })
+    </div>
+    <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+}

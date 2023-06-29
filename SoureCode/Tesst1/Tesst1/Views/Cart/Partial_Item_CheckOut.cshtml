@@ -1,0 +1,41 @@
+﻿@model List<Tesst1.Models.Cart>
+
+@{
+    ViewBag.Title = "Partial_Item_CheckOut";
+}
+
+@if (Model != null && Model.Any())
+{
+    <h3>Giỏ Hàng</h3><span></span>
+   
+    double totalmoney = 0;
+
+    foreach (var item in Model)
+    {
+        double total = Convert.ToDouble(item.Products.ProductPrice.Value * item.Quantity);
+        totalmoney = totalmoney + total;
+        double price = Convert.ToDouble(item.Products.ProductPrice.Value);
+
+<br />
+        <tr>
+            <td>@item.Products.ProductName  -</td>
+
+            <td>@price.ToString("#,##0").Replace(',', '.') VNĐ -</td>
+
+            <td>SL:@item.Quantity</td>
+
+        </tr>
+    }
+    <br />
+    <br />
+    <br />
+    <tr>
+        <td>Tổng Tiền</td>
+        <td> @totalmoney.ToString("#,##0").Replace(',', '.') VNĐ</td>
+    </tr>
+
+
+
+
+}
+

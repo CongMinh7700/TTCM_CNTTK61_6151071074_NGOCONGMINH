@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b5faf88812234339b11e11c12935bdea" Name="Diagram1" ZoomLevel="77">
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.Categories" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.Comment" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.OrderDetails" Width="1.5" PointX="8.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.Orders" Width="1.5" PointX="6" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.OrderStatus" Width="1.5" PointX="3.75" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.Products" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.UserRole" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.Users" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Products__Catego__2B3F6F97" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Products__Catego__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Products__Catego__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Comment__Product__38996AB5" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Comment__UserID__37A5467C" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__OrderDeta__Order__33D4B598" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__OrderDeta__Produ__34C8D9D1" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Orders__StatusID__30F848ED" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Orders__UserID__300424B4" ManuallyRouted="false" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Users__RoleID__286302EC" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.WishList" Width="1.5" PointX="0.5" PointY="5.625" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__WishList__Produc__03F0984C" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__WishList__UserID__02FC7413" />
+        <EntityTypeShape EntityType="WebsiteMuaSamModel.Cart" Width="1.5" PointX="5.5" PointY="5.75" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Cart__ProductID__07C12930" />
+        <AssociationConnector Association="WebsiteMuaSamModel.FK__Cart__UserID__06CD04F7" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,128 @@
+﻿@model Tesst1.Models.Users
+@{
+    ViewBag.Title = "Thanh Toán";
+}
+
+
+
+@Html.Partial("_Header_after_login")
+<body>
+
+
+    <div id="wp-content" class="bg-white">
+        <div class="my-profile auto">
+
+            <div class="heading-my-profile">
+                <h1>Thông Tin Khách Hàng</h1>
+
+            </div>
+
+            <div class="main-my-profile d-fl">
+
+                <div class="main-form-profile flex-6" >
+
+
+
+                    <table width="100%">
+
+
+                        <tr>
+
+                            <td class="left-main-my-profile">
+                                Email
+                            </td>
+                            <td class="right-main-my-profile asc d-fl">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-in-big" } })
+                                <p class="validation-message">
+                                    <!-- Thêm lớp CSS tùy chỉnh -->
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </p>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="left-main-my-profile">
+                                Họ Tên Khách Hàng
+                            </td>
+                            <td>
+                                <div class="right-main-my-profile">
+                                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-in-big" } })
+                                    @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                                </div>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="left-main-my-profile">
+                                Số điện thoại
+
+                            </td>
+                            <td class="">
+                                <div class="right-main-my-profile asc d-fl">
+
+                                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-in-big" } })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td class="left-main-my-profile">Địa Chỉ</td>
+                            <td>
+                                <div class="right-main-my-profile">
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-in-big" } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+
+                            </td>
+                        </tr>
+
+
+                    </table>
+                    <form action="/Cart/Payment" method="POST">
+                        <div class="btn-update-profile mb-3">
+                            <input type="submit" value="Đặt Hàng " class="btn-update" />
+
+
+                        </div>
+
+                    </form>
+
+                </div> 
+                <div class="avatar-my-profile flex-4" >
+                   @Html.Action("Partial_Item_CheckOut","Cart")
+                </div>
+            </div>
+            <div>
+
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+@Html.Partial("_Footer")
+@section scripts {
+    <script>
+        function updateAmount(cartId) {
+            var quantity = $('#quantity_' + cartId).val();
+            $.ajax({
+                url: '@Url.Action("UpdateAmount", "Cart")',
+                type: 'POST',
+                data: { cartId: cartId, quantity: quantity },
+                success: function (result) {
+                    location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+}
+

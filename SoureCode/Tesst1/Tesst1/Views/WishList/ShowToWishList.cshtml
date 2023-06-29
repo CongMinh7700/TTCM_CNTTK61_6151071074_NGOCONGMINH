@@ -1,0 +1,115 @@
+﻿@model List<Tesst1.Models.WishList>
+
+
+<body>
+
+    <div id="wrapper">
+
+
+        @if (string.IsNullOrEmpty(Session["Email"]?.ToString()))
+        {
+            @Html.Partial("_Header")
+        }
+        else
+        {
+
+            @Html.Partial("_Header_after_login")
+        }
+
+        <div class="wp-content-cart hr-red">
+            <div class="wp-set-auto-screen auto">
+                <!-- // vouncher  -->
+
+                @if (Model.Count <= 0)
+                {
+
+
+                    <h1 style="text-align:center">Danh sách yêu thích  của bạn đang rỗng</h1>
+
+                }
+                else
+                {
+                    <!-- // header-cart-order  -->
+                    <div class="header-your-cart auto-dlf mb-12">
+
+                        <div class="sp-text fs-17">Sản phẩm</div>
+                        <div class="unit-price-text fs-17">Đơn Giá</div>
+
+                        <div class="opera-text fs-17">Thao Tác</div>
+
+                    </div>
+                    <!-- //wp-shop -->
+
+                    foreach (var item in Model)
+                    {
+
+                        double price = Convert.ToDouble(item.Products.ProductPrice.Value);
+                        <div id="wp-shop" class="mb-1">
+
+                            <div id="main-shop" class="header-your-cart auto-dlf">
+
+                                <div id="shop" class="sp-text fs-17 d-fl">
+                                    <div class="image-product">
+                                        <img src="~/public/images/@item.Products.ProductImage" width="80px" height="80px" />
+                                    </div>
+                                    <div class="product-name">
+                                        <a href="" class="product-name-link">
+                                            @item.Products.ProductName
+
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="unit-price-text fs-17">@price.ToString("#,##0").Replace(',', '.') VNĐ</div>
+
+
+
+                                <div id="delete_cart" class="opera-text fs-17">
+                                    <a class="mr-12" href="/WishList/RemoveFromWishList/@item.Products.ProductID">
+                                        Xóa
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+
+                    <div id="payment">
+
+
+                        <div id="payment-div-2" class="header-your-cart auto-dlf ml-3 justi-ween
+                            mb-12 ">
+                            <div class="cart-left d-fl">
+                                <div class="delete_all">
+                                    <a href="/WishList/ClearWishList">
+                                        <button class="btn-delete-all">Xóa Tất</button>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="cart-right d-fl">
+
+
+
+
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+
+        </div>
+
+
+        @Html.Partial("_Footer")
+
+
+    </div>
+
+
+</body>

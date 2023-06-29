@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Tesst1.Models.Products>
+<body>
+    <div id="wrapper" class="bg-red">
+
+        @if (string.IsNullOrEmpty(Session["Email"]?.ToString()))
+        {
+            @Html.Partial("_Header")
+        }
+        else
+        {
+
+            @Html.Partial("_Header_after_login")
+        }
+
+        <div id="wp-category" class="wp-category">
+            <div id="content-category">
+
+                <div id="list-category-checkbox-search-left">
+                    <div id="header-filter-search">
+                        <div class="icon">
+
+                        </div>
+                        <div class="span-search d-fl">
+                           
+                        </div>
+                       
+                
+                    </div>
+                </div>
+                <div id="list-category-right">
+                    <div id="banner-category" class="bg-white">
+                        <div class="head-category d-fl">
+                            <div class="brand-lovito mt-4p">
+                                <img src="../../public/images/lovito.png"
+                                     width="36px" height="36px" alt="">
+                            </div>
+                            <div class="lovito-official">
+                                <p>Lovito Official</p>
+                            </div>
+                        </div>
+                        <div class="banner-foot-category">
+                            <img src="../../public/images/sale50.gif" width="1050px" alt="">
+                        </div>
+                    </div>
+                    <div id="search-results-keyword" class="d-fl">
+                        <div class="icon-search-result">
+                            <i class="fa-regular fa-lightbulb" style="color:
+                                        #555;font-size: 25px;"></i>
+                        </div>
+                        <div class="results-for d-fl">
+                            <span>@ViewBag.CategoryName</span>
+                        </div>
+                    </div>
+                    <div class="wp-suggest">
+                        <ul class="ul-suggest">
+                            @foreach (var item in Model)
+                            {
+                                <li class="suggest-li">
+                                    <a href="/Chi-Tiet-San-Pham/@item.ProductID">
+                                        <div class="product-suggest">
+
+                                            <div class="img-suggest-product">
+                                                <img src="~/public/images/@item.ProductImage" width="205px" height="207px" />
+                                            </div>
+                                            <div class="content-suggest-product
+                                                    item">
+                                                <div class="name-suggest-product">
+                                                    <span>
+                                                        @item.ProductName
+                                                    </span>
+                                                </div>
+                                                @{
+                                                    double price = Convert.ToDouble(@item.ProductPrice);
+
+
+                                                    <div class="footer-suggest-product">
+                                                        <div class="price-suggest">
+                                                            <span>@price.ToString("#,##0").Replace(',', '.') VNĐ </span>
+                                                        </div>
+                                                        <div class="sold">
+                                                            <span>Đã bán : 474</span>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <div class="buy-now dp-none">
+                                                <a href="/Cart/BuyNow/@item.ProductID">
+                                                    <p class="">Mua ngay</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                            }
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        @Html.Partial("_Footer")
+
+    </div>
+
+
+</body>
+

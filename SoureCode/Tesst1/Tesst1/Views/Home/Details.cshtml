@@ -1,0 +1,345 @@
+﻿@using Tesst1.Models;
+@model Tesst1.Models.DetailsModel
+
+<body>
+    <div id="wrapper">
+
+        @if (string.IsNullOrEmpty(Session["Email"]?.ToString()))
+        {
+            @Html.Partial("_Header")
+        }
+        else
+        {
+
+            @Html.Partial("_Header_after_login")
+        }
+
+        <div id="wp-product">
+            <div id="wp-content-product">
+                <ul class="list-item clearfix">
+                    <li>
+                        <a href="" class="pl-0" title="">Trang chủ</a>
+                    </li>
+                    <li>
+                        <a href="" title="">@Model.ProductsView.FirstOrDefault().Categories.CategoryName</a>
+                    </li>
+                    <li>
+                        <a href="" title="">@Model.ProductsView.FirstOrDefault().ProductName</a>
+                    </li>
+                </ul>
+                <div class="main-content">
+                    <div class="img-product">
+                        <img src="~/public/images/@Model.ProductsView.FirstOrDefault().ProductImage" width="450px" height="450px" alt="">
+                    </div>
+                    <div class="product-main">
+                        <div class="info-product">
+                            <div class="heading-product">
+                                <h1>@Model.ProductsView.FirstOrDefault().ProductName</h1>
+                            </div>
+                            <div class="rating-product">
+                                <div class="rating-49">
+                                    <div class="list-stars">
+                                        <span class="num-49">@Model.AverageRating.ToString("0.0")</span>
+                                        @for (int i = 0; i < Model.AverageRating; i++)
+                                        {
+                                            <i class="fas fa-star"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="feedback-product">
+                                    <div class="main-feedback">
+                                        <span class="num-57">@Model.CommentView.Count()</span>
+                                        <span>Đánh giá</span>
+                                    </div>
+                                </div>
+                                <div class="sold-product">
+                                    <div class="main-sold-product">
+                                        <span>187</span>
+                                        <span>Đã bán</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @{
+                            double price = Convert.ToDouble(@Model.ProductsView.FirstOrDefault().ProductPrice);
+
+                            <div class="main-price-product">
+                                <div class="price-product">
+                                  <span class="new-price-product">@price.ToString("#,##0").Replace(',', '.') VNĐ</span>
+                                </div>
+                                <div class="gi-cung-re">
+                                    <span>Gì cùng rẻ</span>
+                                    <i class="far fa-question-circle"></i>
+                                </div>
+                                <div class="gia-tot-nhat">Giá tốt nhất so với các sản phẩm cùng loại </div>
+                            </div>
+                        }
+                        <!-- // So luong  -->
+
+                        <div class="buy-now-info-product">
+                            <a href="/Cart/AddToCart/@Model.ProductsView.FirstOrDefault().ProductID">
+                                <button class="add-cart"> Thêm vào giỏ hàng</button>
+
+                                @if (TempData["SuccessCart"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Thành công!',
+                                            text: 'Bạn đã thêm sản phẩm thành công',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+
+                                        });
+                                    </script>
+                                }
+                                @if (TempData["ErrorCart"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Thất bại!!',
+                                            text: 'Bạn cần đăng nhập để thực hiện chức năng này',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+                                        });
+                                    </script>
+                                }
+                            </a>
+                            <a href="/Cart/BuyNow/@Model.ProductsView.FirstOrDefault().ProductID">
+                                <button class="buy-now-product">Mua ngay</button>
+                                @if (TempData["SuccessBuyNow"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Thành công!',
+                                            text: 'Bạn đã thêm sản phẩm thành công',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+                                        });
+                                    </script>
+                                }
+                                @if (TempData["ErrorBuyNow"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Thất bại!!',
+                                            text: 'Bạn cần đăng nhập để thực hiện chức năng này',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+                                        });
+                                    </script>
+                                }
+                            </a>
+                            <a href="/WishList/AddToWishList/@Model.ProductsView.FirstOrDefault().ProductID" class="heart-icon">
+                                <span class="heart-icon">
+                                    <i class="fas fa-heart"></i>
+                                </span>
+                                @if (TempData["SuccessWishList"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Thành công!',
+                                            text: 'Bạn đã thêm sản phẩm thành công',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+                                        });
+                                    </script>
+                                }
+                                @if (TempData["InfoWish"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'info',
+                                            title: 'Thông báo!',
+                                            text: 'Sản phẩm đã có trong danh sách yêu thích',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+                                        });
+                                    </script>
+                                }
+                                @if (TempData["ErrorWishList"] != null)
+                                {
+                                    <script>
+                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Thất bại!',
+                                            text: 'Bạn cần đăng nhập để thực hiện chức năng này',
+                                            timer: 5000, // 5 giây
+                                            showConfirmButton: false
+                                        });
+                                    </script>
+                                }
+                            </a>
+                        </div>
+                        <div class="bao-hanh">
+                            <div class="seven-free">
+                                <img src="~/public/images/tra-hang.png" width="18px" height="18px" alt="">
+                                <div>
+                                    7 ngày miễn phí trả hàng
+                                </div>
+                            </div>
+                            <div class="hang-chinh-hang">
+                                <img src="~/public/images/chinh-hang.png" width="18px" height="18px" alt="">
+                                <div>
+                                    Hàng chính hãng 100%
+                                </div>
+                            </div>
+                            <div class="free-ship">
+                                <img src="~/public/images/free-ship.png" width="18px" height="18px" alt="">
+                                <div>
+                                    Miễn phí vận chuyển
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="detail-product">
+                    <div class="main-heading-detail-product">
+                        <div class="heading-detail-product">
+                            <h1>Mô tả sản phẩm</h1>
+                        </div>
+                        <div class="main-content-detail-product">
+                            <pre style="font-family:'Times New Roman', Times, serif;font-size:17px">  @Model.ProductsView.FirstOrDefault().ProductDescription</pre>
+                        </div>
+                    </div>
+                </div>
+                <div id="detail-product">
+                    <div class="main-heading-detail-product">
+                        <div class="heading-detail-product">
+                            <h1>Bình Luận</h1>
+                        </div>
+                        <div class="main-content-detail-product">
+
+
+                            @foreach (var comment in Model.CommentView)
+                            {
+                                <div class="main-content-detail-product-comment">
+                                    <td>
+                                        <img src="~/public/images/@comment.UserssImage" width="50px" height="50px" alt="">
+                                    </td>
+
+                                    <div class="main-content-detail-product-comment-nd">
+
+
+
+                                        <span>@comment.UserNamess</span>
+                                        @{
+                                            int rating = Convert.ToInt32(comment.Rating);
+                                        }
+
+                                        <span>
+                                            @for (int i = 0; i < rating; i++)
+                                            {
+                                                <i class="fas fa-star active active-color "></i>
+                                            }
+                                        </span>
+                                        <br />
+                                        <span class="date">@comment.DateOrder</span>
+                                        <p>@comment.CommentText</p>
+
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                    <form id="comment-form" method="post" action="/Home/CreateComment">
+                        <input type="hidden" name="ProductID" value="@Model.ProductsView.FirstOrDefault().ProductID">
+
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <h2>Bình luận</h2>
+                            <textarea id="comment-text" name="CommentText" rows="4" placeholder="Nhập nội dung bình luận"></textarea>
+
+                            <label for="rating">Đánh giá:</label>
+                            <div class="rating-stars">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                            <input type="hidden" id="rating" name="Rating" value="0">
+                            <br />
+                            <button id="submit-comment" type="submit" class="btn btn-primary">Gửi bình luận</button>
+                            @if (TempData["SuccessCM"] != null)
+                            {
+                                <script>
+                                    // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Thành công!',
+                                        text: 'Bạn đã bình luận thành công',
+                                        timer: 5000, // 5 giây
+                                        showConfirmButton: false
+                                    });
+                                </script>
+                            }
+                            @if (TempData["FailCM"] != null)
+                            {
+                                <script>
+                                    // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Thất Bại!',
+                                        text: 'Bạn Cần Đăng Nhập Trước khi bình luận',
+                                        timer: 5000, // 5 giây
+                                        showConfirmButton: false
+                                    });
+                                </script>
+                            }
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @Html.Partial("_Footer")
+
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        // Bắt sự kiện khi người dùng bấm vào số sao
+        $('.rating-stars i').click(function () {
+            // Xóa lớp 'active' khỏi tất cả các ngôi sao
+            $('.rating-stars i').removeClass('active');
+
+            // Lấy số sao tương ứng với số lượng ngôi sao bấm
+            var rating = $(this).data('rating');
+
+            // Thêm lớp 'active' cho các ngôi sao từ đầu đến số sao được bấm
+            $('.rating-stars i:lt(' + rating + ')').addClass('active');
+
+            // Cập nhật giá trị rating trong form
+            $('#rating').val(rating);
+
+            // Thay đổi màu của các ngôi sao
+            $('.rating-stars i').each(function (index) {
+                if (index < rating) {
+                    $(this).addClass('active-color');
+                } else {
+                    $(this).removeClass('active-color');
+                }
+            });
+        });
+    });
+
+</script>
+
+
+
+
+

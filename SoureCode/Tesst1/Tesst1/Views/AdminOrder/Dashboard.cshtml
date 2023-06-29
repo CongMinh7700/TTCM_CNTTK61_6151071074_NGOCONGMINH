@@ -1,0 +1,347 @@
+﻿@model IEnumerable<Tesst1.Models.Orders>
+
+
+<body>
+    @Html.Partial("_HeaderAdmin")
+    <div id="wp-content">
+        <div id="content" class="container-fluid">
+            <div class="row">
+
+                <div class="col">
+                    <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                        <div class="card-header">ĐANG XỬ LÝ</div>
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Count(o => o.OrderStatus.StatusName == "Đang Xử Lý")</h5>
+                            <p class="card-text">Số lượng đơn hàng đang xử lý</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header">ĐANG VẬN CHUYỂN</div>
+                        <div class="card-body">
+                            <h5 class="card-title" name="Đang vận chuyển">@Model.Count(o => o.OrderStatus.StatusName == "Đang Giao")</h5>
+                            <p class="card-text">Số đơn đang vận chuyển trong hệ thống</p>
+                        </div>
+                    </div>
+                </div>
+
+                @{ int STT = 0;
+                    double totalmoney = 0;}
+                @foreach (var item in Model)
+                {
+                    double total1 = Convert.ToDouble(@item.TotalMoney);
+                    if (HttpContext.Current.Request.QueryString["status"] != "cancelled" && item.OrderStatus.StatusName != "Đã Hủy")
+                    {
+                        totalmoney = totalmoney + total1;
+                    }
+
+                }
+                <div class="col">
+                    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                        <div class="card-header">DOANH SỐ</div>
+                        <div class="card-body">
+                            <h5 class="card-title">@totalmoney.ToString("#,##0").Replace(',', '.') VNĐ</h5>
+                            <p class="card-text">Doanh số hệ thống</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header">ĐƠN HÀNG THÀNH CÔNG</div>
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Count(o => o.OrderStatus.StatusName == "Thành Công")</h5>
+                            <p class="card-text">Đơn hàng giao dịch thành công</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header">ĐƠN HÀNG HỦY</div>
+                        <div class="card-body">
+                            <h5 class="card-title">@Model.Count(o => o.OrderStatus.StatusName == "Đã Hủy")</h5>
+                            <p class="card-text">Số đơn bị hủy trong hệ thống</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header font-weight-bold d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 ">Đơn hàng</h5>
+
+                </div>
+                <div class="card-body">
+
+                    <form action="" method="GET">
+
+
+                        <table class="table table-striped">
+                            <thead>
+
+                                <tr>
+
+                                    <th scope="col">#</th>
+                                    <th scope="col">Mã</th>
+
+
+                                    <th scope="col">Khách hàng</th>
+                                    <th scope="col">Số điện thoại</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Thời gian</th>
+                                    <th scope="col">Chi tiết</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    // Sắp xếp danh sách item theo ngày đặt hàng (DateOrder) từ mới nhất đến cũ nhất
+                                    var sortedItems = Model.OrderByDescending(item => item.DateOrder);
+                                }
+                                @foreach (var item in sortedItems)
+                                {
+
+                                    STT++;
+                                    if (HttpContext.Current.Request.QueryString["status"] == "success" && item.OrderStatus.StatusName == "Thành Công")
+                                    {
+                                        <tr>
+
+
+                                            <th scope="row">@STT</th>
+                                            <td>@item.OrderID</td>
+
+                                            <td>
+                                                @item.Users.UserName
+                                            </td>
+
+                                            <td> @item.Users.PhoneNumber</td>
+                                            @{
+                                                double total = Convert.ToDouble(@item.TotalMoney);
+
+                                                <td> @total.ToString("#,##0").Replace(',', '.') VNĐ</td>
+
+                                            }
+
+
+                                            <td>
+                                                @if (@item.OrderStatus.StatusName == "Đang Giao")
+                                                {
+                                                    <span class="badge badge-warning">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Đang Xử Lý")
+                                                {
+                                                    <span class="badge badge-primary">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Thành Công")
+                                                {
+                                                    <span class="badge badge-success">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">@item.OrderStatus.StatusName</span>
+                                                }
+
+                                            </td>
+                                            <td>@item.DateOrder</td>
+                                            <td>
+                                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.OrderID })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else if (HttpContext.Current.Request.QueryString["status"] == "delivering" && item.OrderStatus.StatusName == "Đang Giao")
+                                    {
+                                        <tr>
+
+
+                                            <th scope="row">@STT</th>
+                                            <td>@item.OrderID</td>
+                                            <td>
+                                                @item.Users.UserName
+                                            </td>
+
+                                            <td> @item.Users.PhoneNumber</td>
+                                            @{
+                                                double total = Convert.ToDouble(@item.TotalMoney);
+
+                                                <td> @total.ToString("#,##0").Replace(',', '.') VNĐ</td>
+
+
+                                            }
+
+                                            <td>
+                                                @if (@item.OrderStatus.StatusName == "Đang Giao")
+                                                {
+                                                    <span class="badge badge-warning">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Đang Xử Lý")
+                                                {
+                                                    <span class="badge badge-primary">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Thành Công")
+                                                {
+                                                    <span class="badge badge-success">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">@item.OrderStatus.StatusName</span>
+                                                }
+
+                                            </td>
+                                            <td>@item.DateOrder</td>
+                                            <td>
+                                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.OrderID })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else if (HttpContext.Current.Request.QueryString["status"] == "processing" && item.OrderStatus.StatusName == "Đang Xử Lý")
+                                    {
+                                        <tr>
+
+
+                                            <th scope="row">@STT</th>
+                                            <td>@item.OrderID</td>
+                                            <td>
+                                                @item.Users.UserName
+                                            </td>
+
+                                            <td> @item.Users.PhoneNumber</td>
+                                            @{
+                                                double total = Convert.ToDouble(@item.TotalMoney);
+
+                                                <td> @total.ToString("#,##0").Replace(',', '.') VNĐ</td>
+
+
+                                            }
+
+                                            <td>
+                                                @if (@item.OrderStatus.StatusName == "Đang Giao")
+                                                {
+                                                    <span class="badge badge-warning">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Đang Xử Lý")
+                                                {
+                                                    <span class="badge badge-primary">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Thành Công")
+                                                {
+                                                    <span class="badge badge-success">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">@item.OrderStatus.StatusName</span>
+                                                }
+
+                                            </td>
+                                            <td>@item.DateOrder</td>
+                                            <td>
+                                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.OrderID })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else if (HttpContext.Current.Request.QueryString["status"] == "cancelled" && item.OrderStatus.StatusName == "Đã Hủy")
+                                    {
+                                        <tr>
+
+
+                                            <th scope="row">@STT</th>
+                                            <td>@item.OrderID</td>
+                                            <td>
+                                                @item.Users.UserName
+                                            </td>
+
+                                            <td> @item.Users.PhoneNumber</td>
+                                            @{
+                                                double total = Convert.ToDouble(@item.TotalMoney);
+
+                                                <td> @total.ToString("#,##0").Replace(',', '.') VNĐ</td>
+
+
+                                            }
+
+                                            <td>
+                                                @if (@item.OrderStatus.StatusName == "Đang Giao")
+                                                {
+                                                    <span class="badge badge-warning">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Đang Xử Lý")
+                                                {
+                                                    <span class="badge badge-primary">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Thành Công")
+                                                {
+                                                    <span class="badge badge-success">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">@item.OrderStatus.StatusName</span>
+                                                }
+
+                                            </td>
+                                            <td>@item.DateOrder</td>
+                                            <td>
+                                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.OrderID })
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+
+
+                                            <th scope="row">@STT</th>
+                                            <td>@item.OrderID</td>
+                                            <td>
+                                                @item.Users.UserName
+                                            </td>
+
+                                            <td> @item.Users.PhoneNumber</td>
+                                            @{
+                                                double total = Convert.ToDouble(@item.TotalMoney);
+
+                                                <td> @total.ToString("#,##0").Replace(',', '.') VNĐ</td>
+
+
+                                            }
+
+                                            <td>
+                                                @if (@item.OrderStatus.StatusName == "Đang Giao")
+                                                {
+                                                    <span class="badge badge-warning">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Đang Xử Lý")
+                                                {
+                                                    <span class="badge badge-primary">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else if (@item.OrderStatus.StatusName == "Thành Công")
+                                                {
+                                                    <span class="badge badge-success">@item.OrderStatus.StatusName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge badge-danger">@item.OrderStatus.StatusName</span>
+                                                }
+
+                                            </td>
+                                            <td>@item.DateOrder</td>
+                                            <td>
+                                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.OrderID })
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+                            </tbody>
+                        </table>
+
+
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+

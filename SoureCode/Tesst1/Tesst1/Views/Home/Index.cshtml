@@ -1,0 +1,283 @@
+﻿@using Tesst1.Models;
+@model HomeModel
+<body>
+    <div id="wrapper">
+        <!-- // Header  -->
+
+        
+
+        @if (string.IsNullOrEmpty(Session["Email"]?.ToString()))
+        {
+            @Html.Partial("_Header")
+        }
+        else
+        {
+
+            @Html.Partial("_Header_after_login")
+        }
+
+
+
+        <div id="wp-content">
+
+
+
+            <!-- // Category  -->
+            <div class="category">
+                <div class="list-category">
+                    <div class="heading-cate">
+                        <h1>Danh mục</h1>
+                    </div>
+                    <div class="wp-cate">
+                        <ul class="ul-suggest">
+                            @foreach (var item in Model.CategoriesView)
+                            {
+                                <li>
+                                    <a href="/Danh-Muc/@item.CategoryID">
+                                        <div class="cate">
+                                            <div class="img-cate">
+                                                <img src="~/public/images/@item.CategoryImage" width="83px" height="88px" />
+                                            </div>
+                                            <div class="title-cate">
+                                                <p> @item.CategoryName</p>
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- // FLash Sale  -->
+
+            <div id="flash-sale">
+                <div class="list-flash-sale">
+                    <div class="d12-12">
+                        <img src="../public/images/1212.png" class="pdl-34"
+                             alt="">
+                    </div>
+                    <div class="banner-flash-sale">
+                        <img src="../public/images/flashsale.png" alt="">
+                    </div>
+                    <div class="heading-flash-sale">
+                        <h1 class="h1-flash-sale">Ngày hội ưu đãi</h1>
+                    </div>
+                    <div class="owl-carousel owl-theme wp-flash-sale">
+
+                        @foreach (var item in Model.ProductsView)
+                        {
+                            if (item.CategoryID == 1)
+                            {
+                                <div class="product-sale">
+                                    <a href="/Chi-Tiet-San-Pham/@item.ProductID">
+                                        <div class="img-product-sale">
+                                            <img src="~/public/images/@item.ProductImage" width="300px" height="375px" />
+                                        </div>
+                                        <div class="content-product">
+                                            <div class="product-name">
+                                                <p style="color:black"> @item.ProductName</p>
+
+                                            </div>
+                                            @{
+                                                double price = Convert.ToDouble(@item.ProductPrice);
+                                                <div class="price">
+                                                    <span>@price.ToString("#,##0").Replace(',', '.') VNĐ </span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </a>
+
+                                    <div class="buy">
+                                        <a href="/Cart/BuyNow/@item.ProductID">
+                                            Mua Ngay
+                                            @if (TempData["SuccessBuyNow"] != null)
+                                            {
+                                                <script>
+                                                    // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                                    Swal.fire({
+                                                        icon: 'success',
+                                                        title: 'Thành công!',
+                                                        text: 'Bạn đã thêm sản phẩm thành công',
+                                                        timer: 5000, // 5 giây
+                                                        showConfirmButton: false
+                                                    });
+                                                </script>
+                                            }
+                                            @if (TempData["ErrorBuyNow"] != null)
+                                            {
+                                                <script>
+                                                    // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'Thất bại!!',
+                                                        text: 'Bạn cần đăng nhập để thực hiện chức năng này',
+                                                        timer: 5000, // 5 giây
+                                                        showConfirmButton: false
+                                                    });
+                                                </script>
+                                            }
+                                        </a>
+                                    </div>
+                                </div>
+                            }
+
+
+                        }
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- // Suggestion  -->
+
+
+
+            <script>
+
+            </script>
+            <div id="suggest">
+                <div class="list-suggest">
+                    <div class="d12-12-product-suggest">
+                        <img src="../public/images/1212.png" class="mr-105"
+                             alt="">
+                    </div>
+
+                    <div class="heading-suggest">
+                        <h1 class="h1-heading-suggest">Gợi ý hôm nay</h1>
+                    </div>
+
+                    <div class="wp-suggest">
+                        <ul class="ul-suggest">
+
+                            @{
+                                int count = 0;
+                                foreach (var item in Model.ProductsView)
+                                {
+                                    if (item.CategoryID == 1)
+                                    {
+                                        if (count < 18)
+                                        {
+                                            /*Lặp qua sản phẩm và thực hiện các hành động mong muốn*/
+                                            <li class="suggest-li">
+                                                <a href="/Chi-Tiet-San-Pham/@item.ProductID">
+                                                    <div class="product-suggest">
+
+                                                        <div class="img-suggest-product">
+                                                            <img src="~/public/images/@item.ProductImage" width="205px" height="207px" />
+                                                        </div>
+                                                        <div class="content-suggest-product item">
+                                                            <div class="name-suggest-product">
+                                                                <span>
+                                                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                                                </span>
+                                                            </div>
+                                                            <div class="footer-suggest-product">
+                                                                @{
+                                                                    double price = Convert.ToDouble(@item.ProductPrice);
+                                                                    <div class="price-suggest">
+
+
+
+                                                                        <span>@price.ToString("#,##0").Replace(',', '.') VNĐ </span>
+
+
+
+                                                                    </div>
+                                                                }
+                                                                <div class="sold">
+                                                                    <span>Đã bán : 474</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="buy-now dp-none">
+                                                            <a href="/Cart/BuyNow/@item.ProductID">
+                                                                <p class="">Mua ngay</p>
+                                                                @if (TempData["SuccessBuyNow"] != null)
+                                                                {
+                                                                    <script>
+                                                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                                                        Swal.fire({
+                                                                            icon: 'success',
+                                                                            title: 'Thành công!',
+                                                                            text: 'Bạn đã thêm sản phẩm thành công',
+                                                                            timer: 5000, // 5 giây
+                                                                            showConfirmButton: false
+                                                                        });
+                                                                    </script>
+                                                                }
+                                                                @if (TempData["ErrorBuyNow"] != null)
+                                                                {
+                                                                    <script>
+                                                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
+                                                                        Swal.fire({
+                                                                            icon: 'warning',
+                                                                            title: 'Thất bại!!',
+                                                                            text: 'Bạn cần đăng nhập để thực hiện chức năng này',
+                                                                            timer: 5000, // 5 giây
+                                                                            showConfirmButton: false
+                                                                        });
+                                                                    </script>
+                                                                }
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+
+                                            count++;
+                                        }
+                                        else
+                                        {
+                                            // Đã lặp qua đủ 18 sản phẩm, có thể thoát khỏi vòng lặp hoặc thực hiện hành động khác
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="hr-footer-red"> </div>
+        @Html.Partial("_Footer")
+    </div>
+
+
+</body>
+
+</html>
+<script class="text/javascript">
+    $(document).ready(function () {
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"],
+            dots: false,
+            responsive: {
+                0: {
+                    items: 2
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 4
+                }
+            }
+        })
+
+
+
+    });
+</script>
