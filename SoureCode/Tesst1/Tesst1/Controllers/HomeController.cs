@@ -12,9 +12,10 @@ namespace Tesst1.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        private WebsiteMuaSamEntities db = new WebsiteMuaSamEntities();
         public Categories cate = new Categories();
         public Products pro = new Products();
+        private WebsiteMuaSamEntities db = new WebsiteMuaSamEntities();
+     
         // GET: Products
         public ActionResult Index()
         {
@@ -77,14 +78,6 @@ namespace Tesst1.Controllers
         }
 
 
-
-
-
-        //: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-
-
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -113,6 +106,7 @@ namespace Tesst1.Controllers
             return View(products.ToList());
 
         }
+        //Tìm kiếm
         public ActionResult Search(string searchTerm)
         {
             var products = db.Products.Include(p => p.Categories);
@@ -182,12 +176,6 @@ namespace Tesst1.Controllers
                 return comments;
             }
         }
-
-
-
-
-
-
 
 
     }

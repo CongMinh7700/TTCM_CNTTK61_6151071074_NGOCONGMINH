@@ -20,35 +20,35 @@ namespace Tesst1.Controllers
                 // Lấy UserID từ người dùng đã đăng nhập
                 int userId = (int)Session["UserID"];
 
-            // Kiểm tra xem sản phẩm đã tồn tại trong danh sách yêu thích chưa
-            using (var dbContext = new WebsiteMuaSamEntities())
-            {
-                bool isProductInWishList = dbContext.WishList.Any(w => w.UserID == userId && w.ProductID == id);
-
-                if (isProductInWishList)
+                // Kiểm tra xem sản phẩm đã tồn tại trong danh sách yêu thích chưa
+                using (var dbContext = new WebsiteMuaSamEntities())
                 {
-                    TempData["InfoWish"] = "Sản phẩm đã có trong danh sách yêu thích.";
-                    return RedirectToAction("Details", "Home"); // Chuyển hướng đến trang chi tiết sản phẩm
+                    bool isProductInWishList = dbContext.WishList.Any(w => w.UserID == userId && w.ProductID == id);
+
+                    if (isProductInWishList)
+                    {
+                        TempData["InfoWish"] = "Sản phẩm đã có trong danh sách yêu thích.";
+                        return RedirectToAction("Details", "Home"); 
+                    }
+
+                    // Tạo một đối tượng WishList mới
+                    var wishListItem = new WishList
+                    {
+                        UserID = userId,
+                        ProductID = id
+                    };
+
+                    // Lưu đối tượng WishList vào cơ sở dữ liệu
+                    dbContext.WishList.Add(wishListItem);
+                    dbContext.SaveChanges();
                 }
 
-                // Tạo một đối tượng WishList mới
-                var wishListItem = new WishList
-                {
-                    UserID = userId,
-                    ProductID = id
-                };
-
-                // Lưu đối tượng WishList vào cơ sở dữ liệu
-                dbContext.WishList.Add(wishListItem);
-                dbContext.SaveChanges();
-            }
-
-            TempData["SuccessWishList"] = "Thêm sản phẩm thành công";
-            return RedirectToAction("Details", "Home"); // Chuyển hướng đến trang chi tiết sản phẩm
+                TempData["SuccessWishList"] = "Thêm sản phẩm thành công";
+                return RedirectToAction("Details", "Home"); // Chuyển hướng đến trang chi tiết sản phẩm
             }
             else
             {
-                // User is not logged in, display a message asking them to log in
+                
                 TempData["ErrorWishList"] = "Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thich";
                 return RedirectToAction("Details", "Home");
             }
@@ -143,14 +143,14 @@ namespace Tesst1.Controllers
         {
             int total = GetWishListCount(); // Gọi hàm TotalAmount() để tính tổng số lượng
 
-             // Kiểm tra giá trị null trước khi gán
+            // Kiểm tra giá trị null trước khi gán
 
             ViewBag.Total = total; // Đặt giá trị tổng số lượng vào ViewBag
 
             return PartialView("BagWishList");
         }
 
-    
+
 
     }
 }

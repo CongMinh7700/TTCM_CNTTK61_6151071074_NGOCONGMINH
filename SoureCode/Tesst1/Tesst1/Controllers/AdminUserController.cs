@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Tesst1.Models;
@@ -72,6 +71,8 @@ namespace Tesst1.Controllers
                         ImageUser.SaveAs(_path);
                         users.ImageUser = _FileName;
                     }
+                    users.PassWord =HashPassword(users.PassWord);
+                    users.PassWordComfirm = HashPassword(users.PassWord);
                     db.Users.Add(users);
                     db.SaveChanges();
                     return RedirectToAction("Index", "AdminUser");
@@ -81,7 +82,7 @@ namespace Tesst1.Controllers
                     ViewBag.Message = "Không Thành Công!";
                 }
             }
-            ViewBag.RoleID = new SelectList(db.UserRole, "RoleID", "RoleName",users.RoleID);
+            ViewBag.RoleID = new SelectList(db.UserRole, "RoleID", "RoleName", users.RoleID);
             return View(users);
         }
 
@@ -115,14 +116,15 @@ namespace Tesst1.Controllers
                 try
                 {
                     Users existingUser = db.Users.Find(users.UserID);
-                    
+
                     // Cập nhật thông tin người dùng
                     existingUser.UserName = users.UserName;
                     existingUser.Email = users.Email;
                     existingUser.Address = users.Address;
                     existingUser.PhoneNumber = users.PhoneNumber;
                     existingUser.RoleID = users.RoleID;
-
+                    existingUser.PassWord =HashPassword(users.PassWord);
+                    existingUser.PassWordComfirm =HashPassword(users.PassWord);
 
 
                     if (ImageUser != null)
@@ -192,6 +194,22 @@ namespace Tesst1.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        public string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(password);
+                byte[] hash = sha256.ComputeHash(bytes);
+
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < hash.Length; i++)
+                {
+                    builder.Append(hash[i].ToString("x2")); // Chuyển đổi thành chuỗi hexa
+                }
+
+                return builder.ToString();
+            }
         }
     }
 }

@@ -65,7 +65,7 @@
 
                             <div class="main-price-product">
                                 <div class="price-product">
-                                  <span class="new-price-product">@price.ToString("#,##0").Replace(',', '.') VNĐ</span>
+                                    <span class="new-price-product">@price.ToString("#,##0").Replace(',', '.') VNĐ</span>
                                 </div>
                                 <div class="gi-cung-re">
                                     <span>Gì cùng rẻ</span>
@@ -110,19 +110,7 @@
                             </a>
                             <a href="/Cart/BuyNow/@Model.ProductsView.FirstOrDefault().ProductID">
                                 <button class="buy-now-product">Mua ngay</button>
-                                @if (TempData["SuccessBuyNow"] != null)
-                                {
-                                    <script>
-                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Thành công!',
-                                            text: 'Bạn đã thêm sản phẩm thành công',
-                                            timer: 5000, // 5 giây
-                                            showConfirmButton: false
-                                        });
-                                    </script>
-                                }
+                               
                                 @if (TempData["ErrorBuyNow"] != null)
                                 {
                                     <script>
@@ -259,11 +247,14 @@
                         <input type="hidden" name="ProductID" value="@Model.ProductsView.FirstOrDefault().ProductID">
 
                         @Html.AntiForgeryToken()
-                        <div class="form-group">
-                            <h2>Bình luận</h2>
-                            <textarea id="comment-text" name="CommentText" rows="4" placeholder="Nhập nội dung bình luận"></textarea>
-
+                        <div class="form-group" style="margin-left:50px">
+                            <h1>Bình luận</h1>
+                            <br />
+                            <textarea id="comment-text" name="CommentText" rows="4" placeholder="Nhập nội dung bình luận" style="width: 695px; height: 63px;"></textarea>
+                            <br />
+                            <br />
                             <label for="rating">Đánh giá:</label>
+
                             <div class="rating-stars">
                                 <i class="fas fa-star" data-rating="1"></i>
                                 <i class="fas fa-star" data-rating="2"></i>
@@ -273,7 +264,9 @@
                             </div>
                             <input type="hidden" id="rating" name="Rating" value="0">
                             <br />
-                            <button id="submit-comment" type="submit" class="btn btn-primary">Gửi bình luận</button>
+                            <button id="submit-comment" type="submit" class="site-btn" style="margin-left:-5px">Gửi bình luận</button>
+
+
                             @if (TempData["SuccessCM"] != null)
                             {
                                 <script>

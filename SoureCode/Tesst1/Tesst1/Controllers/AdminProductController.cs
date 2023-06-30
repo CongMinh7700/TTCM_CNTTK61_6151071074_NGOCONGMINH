@@ -1,6 +1,4 @@
-﻿using Stripe;
-using System;
-using System.Collections.Generic;
+﻿using PagedList;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
@@ -9,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Tesst1.Models;
-using PagedList;
 
 namespace Tesst1.Controllers
 {
@@ -106,11 +103,11 @@ namespace Tesst1.Controllers
                 return HttpNotFound();
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
-           
+
             return View(products);
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]

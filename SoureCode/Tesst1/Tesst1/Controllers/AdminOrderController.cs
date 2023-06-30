@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data;
 using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using Tesst1.Models;
 
@@ -31,6 +26,7 @@ namespace Tesst1.Controllers
         {
             return View(db.Orders.ToList());
         }
+        //Chỉnh sửa trạng thái
         [HttpPost]
         public ActionResult UpdateStatus(int OrderID, int StatusID)
         {

@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,17 +16,19 @@ namespace Tesst1.Controllers
     {
         // GET: Login
         WebsiteMuaSamEntities db = new WebsiteMuaSamEntities();
-
+        //Đăng Nhập
         public ActionResult Index()
         {
 
             return View();
         }
+        //Đăng Nhập Admin
         public ActionResult LoginAdmin()
         {
 
             return View();
         }
+        //Kiểm tra đăng nhập admin
         [HttpPost]
         public ActionResult AuthenAdmin(Users user)
         {
@@ -59,7 +62,7 @@ namespace Tesst1.Controllers
                     ModelState.AddModelError("PassWord", "Mật khẩu không hợp lệ");
                     return View("Index", user);
                 }
-                
+
             }
             else
             {
@@ -71,7 +74,7 @@ namespace Tesst1.Controllers
             }
 
         }
-        //Method Login
+        //Kiểm tra đăng nhập user
         [HttpPost]
         public ActionResult Authen(Users user)
         {
@@ -107,7 +110,7 @@ namespace Tesst1.Controllers
             }
         }
 
-
+        //Đăng ký
         [HttpGet]
         public ActionResult Register()
         {
@@ -130,7 +133,7 @@ namespace Tesst1.Controllers
                 {
                     string hashedPassword = HashPassword(users.PassWord);
                     users.PassWord = hashedPassword;
-                    users.PassWordComfirm= hashedPassword;
+                    users.PassWordComfirm = hashedPassword;
                     users.RoleID = 2;
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Users.Add(users);
@@ -140,6 +143,7 @@ namespace Tesst1.Controllers
             }
             return View();
         }
+        //Đăng xuất
         public ActionResult Logout()
         {
             Session.Clear();
@@ -150,7 +154,7 @@ namespace Tesst1.Controllers
             Session.Abandon();
             return RedirectToAction("LoginAdmin", "Login");
         }
-
+        //Chỉnh sửa thông tin cá nhân
         public ActionResult Edit(int? userId)
         {
             userId = (int)Session["UserID"];
@@ -186,13 +190,22 @@ namespace Tesst1.Controllers
                     existingUser.Email = users.Email;
                     existingUser.Address = users.Address;
                     existingUser.PhoneNumber = users.PhoneNumber;
+                    existingUser.PassWord = HashPassword(users.PassWord);
+                    existingUser.PassWordComfirm = HashPassword(users.PassWord);
                     var check = db.Users.FirstOrDefault(s => s.Email == users.Email && s.UserID != users.UserID);
                     if (check != null)
                     {
-                        ModelState.AddModelError("Email", "Email đã tồn tại ! Vui lòng sử dụng 1 email khác");
-                        TempData["FailMessage"] = "Thêm sản phẩm thành công";
-                        users.ImageUser = form["oldimage"];
-                        return View(users);
+                        if (users.Email == existingUser.Email)
+                        {
+
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Email", "Email đã tồn tại ! Vui lòng sử dụng 1 email khác");
+                            TempData["FailMessage"] = "Thêm sản phẩm thành công";
+                            users.ImageUser = form["oldimage"];
+                            return View(users);
+                        }
                     }
 
                     if (ImageUser != null)
@@ -219,7 +232,7 @@ namespace Tesst1.Controllers
 
                     db.Entry(existingUser).State = EntityState.Modified;
                     db.SaveChanges();
-                    TempData["SuccessMessage"] = "Thêm sản phẩm thành công";
+                    TempData["SuccessMessage"] = "Thay đổi thông tin thành công";
                     return RedirectToAction("Edit", "Login");
 
                 }
@@ -231,86 +244,10 @@ namespace Tesst1.Controllers
 
             return View(users);
         }
-        public ActionResult EditAdmin(int? userId)
-        {
-            userId = (int)Session["UserID"];
-
-            Users user = db.Users.Find(userId);
-            if (userId == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(user);
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [ValidateInput(false)]
-        public ActionResult EditAdmin([Bind(Include = "UserID,UserName,Email,PassWord,Address,PhoneNumber,ImageUser,Role")] Users users, HttpPostedFileBase ImageUser, FormCollection form)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-
-                    Users existingUser = db.Users.Find(users.UserID);
-
-                    // Cập nhật thông tin người dùng
-                    existingUser.UserName = users.UserName;
-                    existingUser.Email = users.Email;
-                    existingUser.Address = users.Address;
-                    existingUser.PhoneNumber = users.PhoneNumber;
-                    var check = db.Users.FirstOrDefault(s => s.Email == users.Email && s.UserID != users.UserID);
-                    if (check != null)
-                    {
-                        ModelState.AddModelError("Email", "Email đã tồn tại ! Vui lòng sử dụng 1 email khác");
-                        TempData["FailMessage"] = "Thêm sản phẩm thành công";
-                        users.ImageUser = form["oldimage"];
-                        return View(users);
-                    }
-
-                    if (ImageUser != null)
-                    {
-                        string _FileName = Path.GetFileName(ImageUser.FileName);
-                        string _path = Path.Combine(Server.MapPath("~/public/images"), _FileName);
-                        ImageUser.SaveAs(_path);
-                        existingUser.ImageUser = _FileName;
-                        _path = Path.Combine(Server.MapPath("~/public/images"), form["oldimage"]);
-                        if (System.IO.File.Exists(_path))
-                            System.IO.File.Delete(_path);
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(users.PassWord))
-                        {
-                            existingUser.PassWord = users.PassWord;
-                        }
-
-                        existingUser.ImageUser = form["oldimage"];
-                    }
 
 
 
-                    db.Entry(existingUser).State = EntityState.Modified;
-                    db.SaveChanges();
-                    TempData["SuccessMessage"] = "Thêm sản phẩm thành công";
-                    return RedirectToAction("Edit", "Login");
-
-                }
-                catch
-                {
-                    ViewBag.Message = "Không Thành Công!";
-                }
-            }
-
-            return View(users);
-        }
+        //Mã hóa mật khẩu
         public string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -327,10 +264,32 @@ namespace Tesst1.Controllers
                 return builder.ToString();
             }
         }
+        
         public bool VerifyPassword(string password, string hashedPassword)
         {
             string hashedInput = HashPassword(password);
             return string.Equals(hashedInput, hashedPassword);
+        }
+        //Xem danh sách đơn mua hàng
+        public ActionResult ShowUserOrder()
+        {
+            if (Session["UserID"] != null)
+            {
+                int userId = (int)Session["UserID"];
+                return View(db.Orders.Where(h => h.UserID == userId).ToList());
+            }
+            else
+            {
+                return View(new List<Orders>());
+            }
+        }
+        //Chi tiết đơn mua hàng
+        public ActionResult DetailsOrder(int? id)
+        {
+
+            var orderDetails = db.OrderDetails.Where(od => od.OrderID == id).ToList();
+
+            return View(orderDetails);
         }
     }
 }

@@ -52,6 +52,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="FuzzySharp, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FuzzySharp.2.0.2\lib\net461\FuzzySharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -165,7 +168,6 @@
     <Compile Include="Models\Cart.cs">
       <DependentUpon>ProductModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\Categories.cs">
       <DependentUpon>ProductModel.tt</DependentUpon>
     </Compile>
@@ -1927,6 +1929,7 @@
     <Content Include="public\images\Cate_7.png" />
     <Content Include="public\images\Cate_8.png" />
     <Content Include="public\images\Cate_9.png" />
+    <Content Include="public\images\chinh-hang.png" />
     <Content Include="public\images\Danh Mục\Cate_1.png" />
     <Content Include="public\images\Danh Mục\Cate_10.png" />
     <Content Include="public\images\Danh Mục\Cate_2.png" />
@@ -1965,6 +1968,8 @@
     <Content Include="public\images\DH_5.jpg" />
     <Content Include="public\images\DH_6.jpg" />
     <Content Include="public\images\DH_7.jpg" />
+    <Content Include="public\images\DH_8.jpg" />
+    <Content Include="public\images\DH_9.jpg" />
     <Content Include="public\images\fb.png" />
     <Content Include="public\images\fb123.png" />
     <Content Include="public\images\flashsale.png" />
@@ -2212,6 +2217,7 @@
     <Content Include="public\images\TT_14.jpg" />
     <Content Include="public\images\TT_15.jpg" />
     <Content Include="public\images\TT_16.jpg" />
+    <Content Include="public\images\TT_17.jpg" />
     <Content Include="public\images\TT_18.jpg" />
     <Content Include="public\images\TT_19.jpg" />
     <Content Include="public\images\TT_2.jpg" />
@@ -2378,6 +2384,8 @@
     <Content Include="Views\AdminUser\Edit.cshtml" />
     <Content Include="Views\AdminUser\Index.cshtml" />
     <Content Include="Views\Login\LoginAdmin.cshtml" />
+    <Content Include="Views\Login\ShowUserOrder.cshtml" />
+    <Content Include="Views\Login\DetailsOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

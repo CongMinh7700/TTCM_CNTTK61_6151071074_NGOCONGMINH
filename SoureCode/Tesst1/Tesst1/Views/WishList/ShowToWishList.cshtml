@@ -15,7 +15,7 @@
 
             @Html.Partial("_Header_after_login")
         }
-
+        <h1 style="text-align:center; font-size:50px;padding:30px;">Danh sách yêu thích</h1>
         <div class="wp-content-cart hr-red">
             <div class="wp-set-auto-screen auto">
                 <!-- // vouncher  -->
@@ -24,7 +24,7 @@
                 {
 
 
-                    <h1 style="text-align:center">Danh sách yêu thích  của bạn đang rỗng</h1>
+                    <h1 style="text-align: center; font-size: 50px; padding: 30px;">Danh sách yêu thích  của bạn đang rỗng</h1>
 
                 }
                 else
@@ -50,7 +50,9 @@
 
                                 <div id="shop" class="sp-text fs-17 d-fl">
                                     <div class="image-product">
-                                        <img src="~/public/images/@item.Products.ProductImage" width="80px" height="80px" />
+                                        <a href="/Chi-Tiet-San-Pham/@item.ProductID">
+                                            <img src="~/public/images/@item.Products.ProductImage" width="80px" height="80px" />
+                                        </a>
                                     </div>
                                     <div class="product-name">
                                         <a href="" class="product-name-link">

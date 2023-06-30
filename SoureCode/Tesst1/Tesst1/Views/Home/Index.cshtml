@@ -4,7 +4,7 @@
     <div id="wrapper">
         <!-- // Header  -->
 
-        
+
 
         @if (string.IsNullOrEmpty(Session["Email"]?.ToString()))
         {
@@ -92,19 +92,7 @@
                                     <div class="buy">
                                         <a href="/Cart/BuyNow/@item.ProductID">
                                             Mua Ngay
-                                            @if (TempData["SuccessBuyNow"] != null)
-                                            {
-                                                <script>
-                                                    // Sử dụng SweetAlert2 để hiển thị MessageBox
-                                                    Swal.fire({
-                                                        icon: 'success',
-                                                        title: 'Thành công!',
-                                                        text: 'Bạn đã thêm sản phẩm thành công',
-                                                        timer: 5000, // 5 giây
-                                                        showConfirmButton: false
-                                                    });
-                                                </script>
-                                            }
+                                         
                                             @if (TempData["ErrorBuyNow"] != null)
                                             {
                                                 <script>
@@ -196,19 +184,7 @@
                                                         <div class="buy-now dp-none">
                                                             <a href="/Cart/BuyNow/@item.ProductID">
                                                                 <p class="">Mua ngay</p>
-                                                                @if (TempData["SuccessBuyNow"] != null)
-                                                                {
-                                                                    <script>
-                                                                        // Sử dụng SweetAlert2 để hiển thị MessageBox
-                                                                        Swal.fire({
-                                                                            icon: 'success',
-                                                                            title: 'Thành công!',
-                                                                            text: 'Bạn đã thêm sản phẩm thành công',
-                                                                            timer: 5000, // 5 giây
-                                                                            showConfirmButton: false
-                                                                        });
-                                                                    </script>
-                                                                }
+                                                              
                                                                 @if (TempData["ErrorBuyNow"] != null)
                                                                 {
                                                                     <script>

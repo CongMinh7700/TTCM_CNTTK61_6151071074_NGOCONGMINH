@@ -15,11 +15,12 @@
 
             @Html.Partial("_Header_after_login")
         }
+        <h1 style="text-align:center; font-size:50px;padding:30px;">Giỏ hàng</h1>
         @if (Model.Count <= 0 || string.IsNullOrEmpty(Session["Email"]?.ToString()))
         {
 
 
-            <h1 style="text-align:center">Giỏ hàng của bạn đang rỗng</h1>
+            <h1 style="text-align:center; font-size:50px;padding:30px;">Giỏ hàng của bạn đang rỗng</h1>
 
         }
         else
@@ -241,7 +242,7 @@
                                 </defs>
                             </svg>
                             <div class="text-shoppe-vouncher">
-                                Shopee Voucher
+                                COGMIH Voucher
                             </div>
                             <span class="tick-or-in">Chọn Hoặc Nhập Mã</span>
                             <!-- </div> -->
@@ -258,12 +259,12 @@
                             <div class="cart-right d-fl">
 
 
-                                <div class="total-cart d-fl">
+                                <div class="total-cart d-fl" style="margin-right:100px">
                                     Tổng thanh toán : <div class="total">@totalmoney.ToString("#,##0").Replace(',', '.') VNĐ</div>
                                 </div>
                                 <div class="buyy">
                                     <a href="/Cart/CheckOut">
-                                        <button class="btn-buy">Mua hàng</button>
+                                        <button class="site-btn">Mua hàng</button>
 
 
                                         @if (TempData["ErrorPayment"] != null)
@@ -293,7 +294,7 @@
 
                                             </script>
                                         }
-                                        
+
 
 
                                     </a>

@@ -2,7 +2,7 @@
 
 
 
-
+@Html.Partial("_HeaderAdmin")
 
 <body>
     @using (Html.BeginForm("Create", "AdminUser", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -11,7 +11,7 @@
 
 
 
-        @Html.Partial("_HeaderAdmin")
+
         <div id="wp-content">
             <div id="content" class="container-fluid">
                 <div class="card">

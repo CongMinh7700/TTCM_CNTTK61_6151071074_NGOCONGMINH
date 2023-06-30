@@ -1,0 +1,94 @@
+﻿@model List<Tesst1.Models.Orders>
+
+
+<body>
+
+    <div id="wrapper">
+
+
+        @if (string.IsNullOrEmpty(Session["Email"]?.ToString()))
+        {
+            @Html.Partial("_Header")
+        }
+        else
+        {
+
+            @Html.Partial("_Header_after_login")
+        }
+        <h1 style="text-align:center; font-size:50px;padding:30px;">Danh sách đơn hàng</h1>
+        <div class="wp-content-cart hr-red">
+            <div class="wp-set-auto-screen auto">
+                <!-- // vouncher  -->
+
+                @if (Model.Count <= 0)
+                {
+
+
+                    <h1 style="text-align: center; font-size: 50px; padding: 30px;">Danh sách yêu thích  của bạn đang rỗng</h1>
+
+                }
+                else
+                {
+                    <!-- // header-cart-order  -->
+                    <div class="header-your-cart auto-dlf mb-12">
+
+
+                        <div class="sp-text fs-17">Mã đơn</div>
+                        <div class="unit-price-text fs-17">Trạng thái</div>
+                        <div class="qty-text fs-17">Thời Gian</div>
+                        <div class="amount-text fs-17">Số Tiền</div>
+                        <div class="opera-text fs-17">Thao Tác</div>
+
+                    </div>
+                    <!-- //wp-shop -->
+
+                    foreach (var item in Model)
+                    {
+
+                        double price = Convert.ToDouble(item.TotalMoney.Value);
+                        <div id="wp-shop" class="mb-1">
+
+                            <div id="main-shop" class="header-your-cart auto-dlf">
+
+                                <div id="shop" class="sp-text fs-17 d-fl">
+
+                                    <div class="product-name">
+                                        <a href="" class="product-name-link">
+                                            @item.OrderID
+
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="unit-price-text fs-17">@item.OrderStatus.StatusName</div>
+                                <div class="unit-price-text fs-17">@item.DateOrder</div>
+                                <div class="unit-price-text fs-17" style="padding-left:60px">@price.ToString("#,##0").Replace(',', '.') VNĐ</div>
+
+
+
+                                <div id="delete_cart" class="opera-text fs-17" style="margin-right:60px">
+                                    <a class="mr-12" href="@Url.Action("DetailsOrder", "Login", new { id = @item.OrderID })">
+                                        Chi Tiết
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+
+
+
+                }
+            </div>
+
+
+        </div>
+
+
+        @Html.Partial("_Footer")
+
+
+    </div>
+
+
+</body>

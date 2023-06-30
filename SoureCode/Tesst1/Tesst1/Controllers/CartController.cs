@@ -1,5 +1,4 @@
-﻿using Microsoft.Ajax.Utilities;
-using Stripe.Checkout;
+﻿using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,28 +17,29 @@ namespace Tesst1.Controllers
         {
             return View();
         }
+        //Thêm vào giỏ hàng
         public ActionResult AddToCart(int id)
         {
             int quantity = 1;
-
+            // Kiểm tra người dùng có đăng nhập không
             if (Session["UserID"] != null)
             {
-                // User is logged in
+              
                 int userId = (int)Session["UserID"];
 
                 using (var dbContext = new WebsiteMuaSamEntities())
                 {
                     var existingCartItem = dbContext.Cart.FirstOrDefault(c => c.UserID == userId && c.ProductID == id);
-
+                    //Nếu sản phẩm đã tồn tại thì tăng số lượng lên
                     if (existingCartItem != null)
                     {
-                        // Item already exists in the cart, update the quantity and total money
+                        
                         existingCartItem.Quantity += quantity;
                         existingCartItem.TotalMoney = existingCartItem.Price * existingCartItem.Quantity;
                     }
                     else
                     {
-                        // Item doesn't exist in the cart, create a new Cart object
+                        //Nếu chưa có sản phẩm trong giỏ hàng thì tạo mới một sản phẩm
                         var newCartItem = new Cart
                         {
                             UserID = userId,
@@ -47,7 +47,7 @@ namespace Tesst1.Controllers
                             Quantity = quantity
                         };
 
-                        // Get the product price from the database
+                        // Lấy giá sản phẩm từ database và tình tổng tiền
                         var product = dbContext.Products.FirstOrDefault(p => p.ProductID == id);
                         if (product != null)
                         {
@@ -66,7 +66,7 @@ namespace Tesst1.Controllers
             }
             else
             {
-                // User is not logged in, display a message asking them to log in
+                // Nếu chưa đăng nhập thì quay lại trang hiện tại và thông báo đăng nhập 
                 TempData["ErrorCart"] = "Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng";
                 return RedirectToAction("Details", "Home");
             }
@@ -108,7 +108,7 @@ namespace Tesst1.Controllers
                             newCartItem.TotalMoney = product.ProductPrice * quantity;
                         }
 
-                        // Thêm đối tượng Cart mới vào cơ sở dữ liệu
+                        // Thêm sản phẩm mới vào cơ sở dữ liệu
                         dbContext.Cart.Add(newCartItem);
                     }
 
@@ -120,14 +120,15 @@ namespace Tesst1.Controllers
             }
             else
             {
-                // User is not logged in, display a message asking them to log in
+                // Nếu chưa đăng nhập thì quay lại trang hiện tại và thông báo đăng nhập 
                 TempData["ErrorBuyNow"] = "Vui lòng đăng nhập để mua sản phẩm ";
                 return RedirectToAction("Index", "Home");
             }
-            }
+        }
+        //Xem giỏ hàng
         public ActionResult ShowToCart()
         {
-          
+            
             if (TempData.ContainsKey("SuccessPay"))
             {
 
@@ -152,7 +153,8 @@ namespace Tesst1.Controllers
                     return View(cart);
                 }
             }
-            else {
+            else
+            {
                 return View(new List<Cart>());
             }
         }
@@ -168,7 +170,7 @@ namespace Tesst1.Controllers
 
                 if (cart != null)
                 {
-                    // Xóa sản phẩm khỏi danh sách yêu thích
+                    // Xóa sản phẩm khỏi giỏ hàng
                     dbContext.Cart.Remove(cart);
                     dbContext.SaveChanges();
                     TempData["SuccessRemove"] = "Xóa sản phẩm thành công";
@@ -193,7 +195,7 @@ namespace Tesst1.Controllers
 
                 if (cart.Count > 0)
                 {
-                    // Xóa tất cả các sản phẩm trong danh sách yêu thích
+                    // Xóa tất cả các sản phẩm trong giỏ hàng
                     dbContext.Cart.RemoveRange(cart);
                     dbContext.SaveChanges();
                     TempData["SuccessClear"] = "Xóa sản phẩm thành công";
@@ -230,48 +232,54 @@ namespace Tesst1.Controllers
 
             return RedirectToAction("ShowToCart");
         }
+        //Tổng số lượng sản phẩm có trong giỏ hàng
         public int TotalAmount()
         {
             int totalAmount = 0;
+           //Nếu người dùng chưa đăng nhập thì số lượng bằng 0
             if (Session["UserID"] == null)
             {
                 totalAmount = 0;
             }
-            else { 
+            else
+            {
                 int userId = (int)Session["UserID"];
-        
-            using (var dbContext = new WebsiteMuaSamEntities())
+                //Đã đăng nhập
+                //Nếu chưa có sản phẩm thì bằng 0
+                //Nếu đã có thì cập nhật lại tổng số lượng
+                using (var dbContext = new WebsiteMuaSamEntities())
                 {
 
-                totalAmount = (int)dbContext.Cart
-                          .Where(c => c.UserID == userId)
-                          .Select(c => c.Quantity)
-                          .DefaultIfEmpty(0)
-                          .Sum();
+                    totalAmount = (int)dbContext.Cart
+                              .Where(c => c.UserID == userId)
+                              .Select(c => c.Quantity)
+                              .DefaultIfEmpty(0)
+                              .Sum();
 
-            }
+                }
             }
             return totalAmount;
 
         }
 
-
+        //Hiển thị tổng số lượng
         public PartialViewResult BagCart()
         {
-            int totalAmountNullable = TotalAmount(); // Gọi hàm TotalAmount() để tính tổng số lượng
+           
 
-            int totalAmount = TotalAmount(); // Kiểm tra giá trị null trước khi gán
+            int totalAmount = TotalAmount(); 
 
-            ViewBag.TotalAmount = totalAmount; // Đặt giá trị tổng số lượng vào ViewBag
+            ViewBag.TotalAmount = totalAmount; 
 
             return PartialView("BagCart");
         }
 
+        //Kiểm tra trước khi thanh toán
         public ActionResult CheckOut(int? userId)
         {
             WebsiteMuaSamEntities db = new WebsiteMuaSamEntities();
             userId = (int)Session["UserID"];
-           
+
             Users user = db.Users.Find(userId);
             if (userId == null)
             {
@@ -284,76 +292,79 @@ namespace Tesst1.Controllers
 
             return View(user);
         }
+        //Hiển thị danh sách sản phẩm thu nhỏ
         public ActionResult Partial_Item_CheckOut()
         {
-           
-                int userId = (int)Session["UserID"];
-                using (var dbContext = new WebsiteMuaSamEntities())
-                {
-                    var cart = dbContext.Cart
-                        .Where(w => w.UserID == userId)
-                        .Include(w => w.Products)
-                        .ToList();
 
-                    return View(cart);
-                }
-            
-        }
-
-        public ActionResult Payment()
-        {
-            if (ModelState.IsValid)
+            int userId = (int)Session["UserID"];
+            using (var dbContext = new WebsiteMuaSamEntities())
             {
-                int userId = (int)Session["UserID"];
+                var cart = dbContext.Cart
+                    .Where(w => w.UserID == userId)
+                    .Include(w => w.Products)
+                    .ToList();
 
-                var cartItems = db.Cart.Where(c => c.UserID == userId).ToList();
+                return View(cart);
+            }
 
-                var options = new SessionCreateOptions
+        }
+        //Thanh toán StripeApi
+            public ActionResult Payment()
+            {
+                if (ModelState.IsValid)
                 {
-                    PaymentMethodTypes = new List<string> { "card" },
-                    LineItems = new List<SessionLineItemOptions>(),
-                    Mode = "payment",
-                    SuccessUrl = Url.Action("Success", "Cart", null, Request.Url.Scheme),
-                    CancelUrl = Url.Action("Cancel", "Cart", null, Request.Url.Scheme),
-                };
+                    int userId = (int)Session["UserID"];
+                //Lấy sản phẩm có trong giỏ hàng
+                    var cartItems = db.Cart.Where(c => c.UserID == userId).ToList();
 
-                foreach (var cartItem in cartItems)
-                {
-                    var productName = cartItem.Products.ProductName; // Retrieve the name of the product from the cartItem
-
-                    options.LineItems.Add(new SessionLineItemOptions
+                    var options = new SessionCreateOptions
                     {
-                        PriceData = new SessionLineItemPriceDataOptions
+                        PaymentMethodTypes = new List<string> { "card" },
+                        LineItems = new List<SessionLineItemOptions>(),
+                        Mode = "payment",
+                        SuccessUrl = Url.Action("Success", "Cart", null, Request.Url.Scheme),
+                        CancelUrl = Url.Action("Cancel", "Cart", null, Request.Url.Scheme),
+                    };
+                //Duyệt và lấy danh sách sản phẩm
+                    foreach (var cartItem in cartItems)
+                    {
+                        var productName = cartItem.Products.ProductName; 
+
+                        options.LineItems.Add(new SessionLineItemOptions
                         {
-                            Currency = "vnd",
-                            UnitAmount = (long)(cartItem.Price),
-                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            PriceData = new SessionLineItemPriceDataOptions
                             {
-                                Name = productName, // Use the product name from the cartItem
+                                Currency = "vnd",
+                                UnitAmount = (long)(cartItem.Price),
+                                ProductData = new SessionLineItemPriceDataProductDataOptions
+                                {
+                                    Name = productName, 
+                                },
                             },
-                        },
-                        Quantity = cartItem.Quantity,
-                    });
-                }
-             
-                var service = new SessionService();
-                Stripe.Checkout.Session session = service.Create(options);
-                
-                // Store the cart items in TempData for reference in the Success method
-                TempData["CartItems"] = cartItems;
+                            Quantity = cartItem.Quantity,
+                        });
+                    }
+                    //Tạo phiên thanh toán StripeAPI
+                    var service = new SessionService();
+                    Stripe.Checkout.Session session = service.Create(options);
+
+               //Lưu tạm giỏ hàng vào temp data 
+                    TempData["CartItems"] = cartItems;
+                //Tới trang thanh toán
                
                 return Redirect(session.Url);
 
-            }
-            
+                }
+          
             return RedirectToAction("ShowToCart", "Cart");
-        }
+            }
 
 
         public ActionResult Success(string session_id)
         {
+           
             var cartItems = TempData["CartItems"] as List<Cart>;
-            TempData["SuccessPay"] = "Thanh toán thành công";
+           
             if (cartItems != null)
             {
                 Orders order = new Orders();
@@ -370,21 +381,21 @@ namespace Tesst1.Controllers
                         Price = cartItem.Price
                     });
                 }
-             
+
                 order.TotalMoney = cartItems.Sum(x => (x.Quantity * x.Price));
                 order.DateOrder = DateTime.Now;
                 order.StatusID = 1;
 
                 db.Orders.Add(order);
                 db.SaveChanges();
-
+               
                 ClearCart();
                 db.SaveChanges();
-                
-                TempData["OrderID"] = order.OrderID; // Lưu OrderID vào TempData để sử dụng sau này
+
+                TempData["OrderID"] = order.OrderID;
                
             }
-         
+
             TempData.Remove("CartItems"); // Xóa thông tin sản phẩm trong TempData
             TempData["SuccessPay"] = "Thanh toán thành công";
 

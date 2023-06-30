@@ -64,6 +64,7 @@
                                     <div class="right-main-my-profile asc d-fl">
 
                                         @Html.EditorFor(model => model.PassWord, new { htmlAttributes = new { @class = "form-in-big", type = "password" } })
+
                                         @Html.ValidationMessageFor(model => model.PassWord, "", new { @class = "text-danger" })
 
 

@@ -7,7 +7,7 @@
 @if (Model != null && Model.Any())
 {
     <h3>Giỏ Hàng</h3><span></span>
-   
+
     double totalmoney = 0;
 
     foreach (var item in Model)
@@ -16,7 +16,7 @@
         totalmoney = totalmoney + total;
         double price = Convert.ToDouble(item.Products.ProductPrice.Value);
 
-<br />
+        <br />
         <tr>
             <td>@item.Products.ProductName  -</td>
 
