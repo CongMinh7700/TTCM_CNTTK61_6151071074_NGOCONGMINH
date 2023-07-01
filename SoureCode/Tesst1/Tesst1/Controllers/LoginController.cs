@@ -220,9 +220,9 @@ namespace Tesst1.Controllers
                     }
                     else
                     {
-                        if (!string.IsNullOrEmpty(users.PassWord))
+                        if (!string.IsNullOrEmpty(HashPassword(users.PassWord)))
                         {
-                            existingUser.PassWord = users.PassWord;
+                            existingUser.PassWord = HashPassword(users.PassWord); ;
                         }
 
                         existingUser.ImageUser = form["oldimage"];

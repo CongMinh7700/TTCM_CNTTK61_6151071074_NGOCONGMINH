@@ -1,0 +1,5 @@
+id,Description,Seller Message,Created (UTC),Amount,Amount Refunded,Currency,Converted Amount,Converted Amount Refunded,Fee,Taxes On Fee,Converted Currency,Status,Statement Descriptor,Customer ID,Customer Description,Customer Email,Captured,Card ID,Invoice ID,Transfer
+ch_3NOtxJHE2IXUqmOy0xg73gZ0,,Payment complete.,2023-07-01 02:54,65000,0,vnd,2.73,0.00,0.38,0.00,usd,Paid,Stripe,,,,true,pm_1NOtxIHE2IXUqmOyyqWEiesf,,
+ch_3NOttiHE2IXUqmOy02w6iKcL,,Payment complete.,2023-07-01 02:50,65000,0,vnd,2.73,0.00,0.38,0.00,usd,Paid,Stripe,,,,true,pm_1NOttiHE2IXUqmOyjBJekXyv,,
+ch_3NOsvwHE2IXUqmOy1vAf0GPQ,,Payment complete.,2023-07-01 01:49,150000,0,vnd,6.30,0.00,0.48,0.00,usd,Paid,Stripe,,,,true,pm_1NOsvvHE2IXUqmOy1WcAlLYm,,
+ch_3NOshcHE2IXUqmOy0nlLkVWF,,Payment complete.,2023-07-01 01:34,145000,0,vnd,6.09,0.00,0.48,0.00,usd,Paid,Stripe,,,,true,pm_1NOshbHE2IXUqmOycKzw6uvD,,
